@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_restful import Api, Resource
+from flask import render_template
 import back_end as db
 
 app = Flask(__name__)
@@ -51,7 +52,15 @@ class SelectAllProducts(Resource):
     sql = "SELECT * from product"
     return db.query_values(sql)
 
-api.add_resource(Info, '/', '/info')
+@app.route('/info')
+def instructions():
+  return render_template('info.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+api.add_resource(Info, '/')
 api.add_resource(InsertProduct, '/add/<string:prd_cod>/<string:prd_name>/<string:prd_description>/<string:prd_price>/<string:prd_stock>')
 api.add_resource(UpdateProduct, '/upd/<string:prd_cod>/<string:prd_name>/<string:prd_description>/<string:prd_price>/<string:prd_stock>')
 api.add_resource(SelectAllProducts, '/all')
