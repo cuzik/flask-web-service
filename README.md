@@ -22,7 +22,13 @@ http://127.0.0.1:5000/add/<codigo>/<nome>/<descrição>/<preço>/<quantidade>
 ```
 
 ### Update product
-[no work]
+Access url
+```
+http://127.0.0.1:5000/upd/<codigo>/<new_nome>/<new_descrição>/<new_preço>/<new_quantidade>
+```
 
 ### Select All products
-[no work]
+Access url
+```
+http://127.0.0.1:5000/all
+```
