@@ -1,3 +1,0 @@
-Hi welcome to my first API in flask bitch
-
-access https://github.com/carloscuzik/flask-web-service

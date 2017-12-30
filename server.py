@@ -12,10 +12,6 @@ def error_key_not_null():
 def error_key_null():
   return {'error': 'key is not on the system baby, try again'}
 
-class Info(Resource):
-  def get(self):
-    return open("info.txt", "r").read().split('\n')
-
 class InsertProduct(Resource):
   def get(self, prd_cod, prd_name, prd_description, prd_price, prd_stock):
     values = {
@@ -31,20 +27,35 @@ class InsertProduct(Resource):
       return {'error': str(e)}
     return [{'success': 'this product was included'}, values]
 
-class UpdateProduct(Resource):
-  def get(self, prd_cod, prd_name, prd_description, prd_price, prd_stock):
-    values = {
-      'prd_cod': prd_cod,
-      'prd_name': prd_name,
-      'prd_description': prd_description,
-      'prd_price': prd_price,
-      'prd_stock': prd_stock
-    }
+class GetProductByCod(Resource):
+  def get(self, conditions):
+    conditions = conditions.split(',')
+    values = {}
+    for i in conditions:
+      i = i.split(':')
+      values.update({i[0] : i[1]})
     try:
-      db.update_values(values)
+      products = db.get_product_by(values)
     except Exception as e:
       return {'error': str(e)}
-    return [{'success': 'this product was modify'}, values]
+    return [{'success': 'query is valid', 'count': len(products)}, products]
+
+class UpdateProduct(Resource):
+  def get(self, prd_cod, conditions):
+    conditions = conditions.split(',')
+    values = {'prd_cod': prd_cod}
+    for i in conditions:
+      i = i.split(':')
+      values.update({i[0] : i[1]})
+    try:
+      old_values = db.get_product_by({'prd_cod': prd_cod})
+      db.update_values(values)
+      new_values = db.get_product_by({'prd_cod': prd_cod})
+    except Exception as e:
+      return {'error': str(e)}
+    if(len(new_values) == 0):
+      return {'error': 'product not found'}
+    return [{'success': 'this product was modify'}, [{'old_values': old_values[0]}, {'new values': new_values[0]}]]
 
 
 class SelectAllProducts(Resource):
@@ -53,6 +64,7 @@ class SelectAllProducts(Resource):
     return db.query_values(sql)
 
 @app.route('/info')
+@app.route('/')
 def instructions():
   return render_template('info.html')
 
@@ -60,13 +72,10 @@ def instructions():
 def page_not_found(e):
     return render_template('404.html'), 404
 
-api.add_resource(Info, '/')
+api.add_resource(GetProductByCod, '/get/<string:conditions>')
 api.add_resource(InsertProduct, '/add/<string:prd_cod>/<string:prd_name>/<string:prd_description>/<string:prd_price>/<string:prd_stock>')
-api.add_resource(UpdateProduct, '/upd/<string:prd_cod>/<string:prd_name>/<string:prd_description>/<string:prd_price>/<string:prd_stock>')
+api.add_resource(UpdateProduct, '/upd/<string:prd_cod>/<string:conditions>')
 api.add_resource(SelectAllProducts, '/all')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-

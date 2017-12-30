@@ -18,17 +18,23 @@ python server.py
 ### Insert product
 Access `url`
 ```
-http://127.0.0.1:5000/add/<codigo>/<nome>/<descrição>/<preço>/<quantidade>
+http://127.0.0.1:5000/add/<cod>/<name>/<description>/<price>/<stock>
 ```
 
 ### Update product
 Access `url`
 ```
-http://127.0.0.1:5000/upd/<codigo>/<new_nome>/<new_descrição>/<new_preço>/<new_quantidade>
+http://127.0.0.1:5000/upd/<cod>/<attr_1_name>:<attr_1_value>,<...>,<attr_n_name>:<attr_n_value>
 ```
 
 ### Select All products
 Access `url`
 ```
 http://127.0.0.1:5000/all
+```
+
+### Get product by somethig
+Access `url`
+```
+http://127.0.0.1:5000/get/<attr_1_name>:<attr_1_value>,<...>,<attr_n_name>:<attr_n_value>
 ```
