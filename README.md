@@ -7,6 +7,13 @@ Olá, esse repositório é destinado a criação de um simples Web Service utili
 - Flask
 - Mysql-python
 
+## install [dependencias]
+```shell
+pip3 install flask
+pip3 install flask-restful
+pip3 install mysql-connector-python-rf
+```
+
 ## Run Server
 
 ```shell

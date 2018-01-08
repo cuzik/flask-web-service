@@ -38,7 +38,7 @@ class GetProductByCod(Resource):
       products = db.get_product_by(values)
     except Exception as e:
       return {'error': str(e)}
-    return [{'success': 'query is valid', 'count': len(products)}, products]
+    return products
 
 class UpdateProduct(Resource):
   def get(self, prd_cod, conditions):
